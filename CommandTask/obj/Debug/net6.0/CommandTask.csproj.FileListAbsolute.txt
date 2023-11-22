@@ -1,0 +1,14 @@
+C:\Users\NaN\source\repos\CommandTask\CommandTask\obj\Debug\net6.0\CommandTask.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\NaN\source\repos\CommandTask\CommandTask\obj\Debug\net6.0\CommandTask.AssemblyInfoInputs.cache
+C:\Users\NaN\source\repos\CommandTask\CommandTask\obj\Debug\net6.0\CommandTask.AssemblyInfo.cs
+C:\Users\NaN\source\repos\CommandTask\CommandTask\obj\Debug\net6.0\CommandTask.csproj.CoreCompileInputs.cache
+C:\Users\NaN\source\repos\CommandTask\CommandTask\bin\Debug\net6.0\CommandTask.exe
+C:\Users\NaN\source\repos\CommandTask\CommandTask\bin\Debug\net6.0\CommandTask.deps.json
+C:\Users\NaN\source\repos\CommandTask\CommandTask\bin\Debug\net6.0\CommandTask.runtimeconfig.json
+C:\Users\NaN\source\repos\CommandTask\CommandTask\bin\Debug\net6.0\CommandTask.dll
+C:\Users\NaN\source\repos\CommandTask\CommandTask\bin\Debug\net6.0\CommandTask.pdb
+C:\Users\NaN\source\repos\CommandTask\CommandTask\obj\Debug\net6.0\CommandTask.dll
+C:\Users\NaN\source\repos\CommandTask\CommandTask\obj\Debug\net6.0\refint\CommandTask.dll
+C:\Users\NaN\source\repos\CommandTask\CommandTask\obj\Debug\net6.0\CommandTask.pdb
+C:\Users\NaN\source\repos\CommandTask\CommandTask\obj\Debug\net6.0\CommandTask.genruntimeconfig.cache
+C:\Users\NaN\source\repos\CommandTask\CommandTask\obj\Debug\net6.0\ref\CommandTask.dll
