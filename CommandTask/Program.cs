@@ -2,6 +2,13 @@
 using System.Text;
 namespace command
 {
+
+    /// <summary>
+    /// To use the remote control type command 0-6. After enabled it should show the status on the bottom as ON/OFF.
+    /// If you want to turn off the command you have to type "undo". This sets command status to OFF.
+    /// If you typed 2 or 3 commands one by one and you want to turn off previous ones. 
+    /// First of all you have to insert the previous command number (0-6) then after insert "undo".
+    /// </summary>
     public class RemoteLoader
     {
         public static void Main(String[] args)
