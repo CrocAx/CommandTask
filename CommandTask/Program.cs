@@ -4,10 +4,9 @@ namespace command
 {
 
     /// <summary>
-    /// To use the remote control type command 0-6. After enabled it should show the status on the bottom as ON/OFF.
-    /// If you want to turn off the command you have to type "undo". This sets command status to OFF.
-    /// If you typed 2 or 3 commands one by one and you want to turn off previous ones. 
-    /// First of all you have to insert the previous command number (0-6) then after insert "undo".
+    /// To use the remote control type command 0-8. After enabled it should show the status on the bottom as ON/OFF.
+    /// If you want to turn off the command you can type "undo". This sets last command status to OFF.
+    /// First of all you have to insert the previous command number (0-8) then after insert "undo".
     /// </summary>
     public class RemoteLoader
     {
@@ -42,19 +41,23 @@ namespace command
 
             // Seperate controls for each slot 
             remoteControl.SetCommand(0, livingRoomLightOn, livingRoomLightOff);
-            remoteControl.SetCommand(1, kitchenLightOn, kitchenLightOff);
-            remoteControl.SetCommand(2, thermostatOn, thermostatOff);
-            remoteControl.SetCommand(3, thermostatIncrease, thermostatDecrease);
+            remoteControl.SetCommand(1, livingRoomLightOff, livingRoomLightOn);
+            remoteControl.SetCommand(2, kitchenLightOn, kitchenLightOff);
+            remoteControl.SetCommand(3, kitchenLightOff, kitchenLightOn);
+            remoteControl.SetCommand(4, thermostatOn, thermostatOff);
+            remoteControl.SetCommand(5, thermostatOff, thermostatOn);
+            remoteControl.SetCommand(6, thermostatIncrease, thermostatDecrease);
+            remoteControl.SetCommand(7, thermostatDecrease, thermostatIncrease);
 
             // Macro control
-            remoteControl.SetCommand(4, backHomeMacro, outOfTheHomeMacro);
+            remoteControl.SetCommand(8, backHomeMacro, outOfTheHomeMacro);
 
 
             /// Output in the console
             Console.WriteLine(remoteControl);
             remoteControl.PrintCurrentStatus();
 
-            Console.WriteLine("Enter command (0-6) or 'undo':");
+            Console.WriteLine("Enter command (0-8) or 'undo':");
 
             while (true)
             {
@@ -65,15 +68,19 @@ namespace command
                     remoteControl.undoButtonWasPushed();
                     remoteControl.PrintCurrentStatus();
                 }
-                else if (int.TryParse(input, out int commandNumber) && commandNumber >= 0 && commandNumber <= 6)
+                else if (int.TryParse(input, out int commandNumber) && commandNumber >= 0 && commandNumber <= 8)
                 {
                     remoteControl.OnButtonWasPushed(commandNumber);
                     Console.WriteLine(remoteControl);
                     remoteControl.PrintCurrentStatus();
+                    Console.Clear();
+                    Console.WriteLine(remoteControl);
+                    remoteControl.PrintCurrentStatus();
+                    remoteControl.OnButtonWasPushed(commandNumber);
                 }
                 else
                 {
-                    Console.WriteLine("Invalid input. Please enter a number (0-6) or 'undo'.");
+                    Console.WriteLine("Invalid input. Please enter a number (0-8) or 'undo'.");
                 }
             }
         }
@@ -395,12 +402,12 @@ namespace command
 
         public RemoteControl()
         {
-            onCommands = new Command[7];
-            offCommands = new Command[7];
+            onCommands = new Command[9];
+            offCommands = new Command[9];
             isThermostatOn = false;
 
             Command noCommand = new NoCommand();
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 9; i++)
             {
                 onCommands[i] = noCommand;
                 offCommands[i] = noCommand;
@@ -431,11 +438,13 @@ namespace command
             }
 
             undoCommand = onCommands[slot];
+
         }
 
         public void OffButtonWasPushed(int slot)
         {
             offCommands[slot].Execute();
+            
 
             // Check if thermostat is turned off
             if (offCommands[slot] is ThermostatOffCommand)
@@ -444,6 +453,7 @@ namespace command
             }
 
             undoCommand = offCommands[slot];
+
         }
 
         public void undoButtonWasPushed()
@@ -453,24 +463,18 @@ namespace command
             Console.WriteLine();
         }
 
-        public void PrintStatus()
-        {
-            Console.WriteLine("------ Remote Control Status ------");
-
-            for (int i = 0; i < commandStatus.Length; i++)
-            {
-                Console.WriteLine($"Command {i}: {(commandStatus[i] ? "Active" : "Inactive")}");
-            }
-
-            Console.WriteLine("-----------------------------------");
-        }
         public void PrintCurrentStatus()
         {
             Console.WriteLine("------ Current Status ------");
-            Console.WriteLine($"Living Room Light: {(onCommands[0] is LightOnCommand ? (onCommands[0] as LightOnCommand).GetStatus() ? "ON" : "OFF" : "OFF")}");
-            Console.WriteLine($"Kitchen Light: {(onCommands[1] is LightOnCommand ? (onCommands[1] as LightOnCommand).GetStatus() ? "ON" : "OFF" : "OFF")}");
 
-            if (onCommands[2] is ThermostatOnCommand thermostatOnCommand)
+            // Living Room Light
+            Console.WriteLine($"Living Room Light: {(onCommands[0] is LightOnCommand ? (onCommands[0] as LightOnCommand).GetStatus() ? "ON" : "OFF" : "OFF")}");
+
+            // Kitchen Light
+            Console.WriteLine($"Kitchen Light: {(onCommands[2] is LightOnCommand ? (onCommands[2] as LightOnCommand).GetStatus() ? "ON" : "OFF" : "OFF")}");
+
+            // Thermostat
+            if (onCommands[4] is ThermostatOnCommand thermostatOnCommand)
             {
                 Thermostat thermostat = thermostatOnCommand.GetThermostat();
                 Console.WriteLine($"Thermostat: {(thermostat.IsOn() ? "ON" : "OFF")}, Temperature: {thermostat.GetTemperature()} degrees");
@@ -483,14 +487,14 @@ namespace command
             Console.WriteLine("-----------------------------------");
         }
 
+
         public override string ToString()
         {
             StringBuilder stringBuff = new StringBuilder();
             stringBuff.Append("\n------- Remote Control -------\n");
             for (int i = 0; i < onCommands.Length; i++)
             {
-                stringBuff.Append("[slot " + i + "] " + onCommands[i].GetType().Name
-                    + "    " + offCommands[i].GetType().Name + "\n");
+                stringBuff.Append("[slot " + i + "] " + onCommands[i].GetType().Name + "\n");
             }
             stringBuff.Append("[undo] " + undoCommand.GetType().Name + "\n");
             return stringBuff.ToString();
